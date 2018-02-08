@@ -69,4 +69,17 @@ org.quartz.jobStore.dataSource = myDS
 3，TerracottaJobStore
 在Quartz被Software AG收购后免不了要夹带一些私货。这个就是专门给Terracotta配置的。我也就懒得讲了，大家网上搜搜吧。
 说了这么多，其实都是Quartz的标准用法。在使用实践中因为各种原因导致没有办法使用官方提供的三种数据存储方式。所以只有自己动手丰衣足食，开辟新的玩法了。
+3，Quartz 定时器动态修改执行时间修改后出现立即执行情况
+step-01
+问题已解决：CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getJobExpression()).withMisfireHandlingInstructionDoNothing();
+withMisfireHandlingInstructionDoNothing
+——不触发立即执行
+——等待下次Cron触发频率到达时刻开始按照Cron频率依次执行
+==
+step-02
+quartz.properties
+#这个时间大于10000（10秒）会导致MISFIRE_INSTRUCTION_DO_NOTHING不起作用。
+org.quartz.jobStore.misfireThreshold = 5000
+======================================
+
 
